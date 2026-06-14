@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | SecureTask Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .card { background: white; border-radius: 20px; padding: 25px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        h2 { color: #667eea; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; }
+        .badge-admin { background: #dc3545; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+        .badge-user { background: #28a745; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+        .btn { padding: 6px 12px; border-radius: 8px; text-decoration: none; font-size: 12px; margin: 2px; display: inline-block; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-info { background: #17a2b8; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 15px; text-align: center; }
+        .stat h3 { font-size: 32px; }
+        .nav { background: white; padding: 15px 30px; margin-bottom: 20px; display: flex; justify-content: space-between; }
+        .nav a { text-decoration: none; color: #667eea; margin: 0 10px; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <h2 style="color:#667eea">🔒 Admin Panel</h2>
+        <div>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="stats">
+            <div class="stat"><h3>{{ total_users }}</h3><p>Total Users</p></div>
+            <div class="stat"><h3>{{ total_tasks }}</h3><p>Total Tasks</p></div>
+            <div class="stat"><h3>{{ total_logs }}</h3><p>Activity Logs</p></div>
+        </div>
+        
+        <div class="card">
+            <h2>👥 Users</h2>
+            <table>
+                <tr><th>Username</th><th>Role</th><th>Tasks</th><th>Actions</th></tr>
+                {% for ud in users_with_stats %}
+                <tr>
+                    <td>{{ ud.user.username }}</td>
+                    <td>{% if ud.user.role == 'admin' %}<span class="badge-admin">Admin</span>{% else %}<span class="badge-user">User</span>{% endif %}</td>
+                    <td>{{ ud.task_count }}</td>
+                    <td>
+                        {% if ud.user.role != 'admin' %}
+                        <a href="{% url 'make_admin' ud.user.id %}" class="btn btn-info">Make Admin</a>
+                        <a href="{% url 'delete_user' ud.user.id %}" class="btn btn-danger" onclick="return confirm('Delete user?')">Delete</a>
+                        {% else %}
+                        <span style="color:gray;">Protected</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div> </body>
+</html>

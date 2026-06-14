@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | SecureTask Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4));
+            z-index: 0;
+        }
+        
+        /* Navbar */
+        .navbar {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            margin: 0 10px;
+            transition: 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        /* Profile Card */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Cover Photo */
+        .cover-photo {
+            height: 120px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            position: relative;
+        }
+        
+        /* Avatar */
+        .avatar-section {
+            text-align: center;
+            margin-top: -60px;
+            position: relative;
+        }
+        
+        .avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: white;
+            border: 5px solid white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* Profile Info */
+        .profile-info {
+            text-align: center;
+            padding: 20px 30px 30px;
+        }
+        
+        .username {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .role-admin {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+        
+        .role-user {
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+        }
+        
+        .member-since {
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: #e0e0e0;
+            margin: 20px 30px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .stat-item {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        
+        .stat-item:hover {
+            background: white;
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        /* Info Sections */
+        .info-section {
+            padding: 0 30px 30px;
+        }
+        
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+        
+        .info-card:hover {
+            background: #f0f2f5;
+            transform: translateX(5px);
+        }
+        
+        .info-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .info-value {
+            font-size: 16px;
+            color: #333;
+            word-break: break-word;
+        }
+        
+        /* Security Section */
+        .security-section {
+            background: linear-gradient(135deg, #fff5e6, #ffe8d9);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 30px 30px;
+            border: 1px solid #ffd9b5;
+        }
+        
+        .security-title {
+            font-weight: bold;
+            color: #e67e22;
+            margin-bottom: 10px;
+        }
+        
+        .security-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #27ae60;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        
+        /* Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            padding: 0 30px 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px auto;
+            }
+            .stats-grid {
+                margin: 15px 20px;
+            }
+            .info-section {
+                padding: 0 20px 20px;
+            }
+            .action-buttons {
+                flex-direction: column;
+                padding: 0 20px 20px;
+            }
+            .btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">🔒 SecureTask Pro</div>
+        <div class="nav-links">
+            <a href="{% url 'dashboard' %}">← Back to Dashboard</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="profile-card">
+            <!-- Cover Photo -->
+            <div class="cover-photo"></div>
+            
+            <!-- Avatar Section -->
+            <div class="avatar-section">
+                <div class="avatar">
+                    {{ request.user.username|make_list|first|upper }}
+                </div>
+            </div>
+            
+            <!-- Profile Info -->
+            <div class="profile-info">
+                <div class="username">{{ request.user.username }}</div>
+                <span class="role-badge {% if request.user.role == 'admin' %}role-admin{% else %}role-user{% endif %}">
+                    {% if request.user.role == 'admin' %}👑 Administrator{% else %}👤 Standard User{% endif %}
+                </span>
+                <div class="member-since">
+                    🗓️ Member since {{ request.user.date_joined|date:"F d, Y" }}
+                </div>
+            </div>
+            
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">{{ request.user.date_joined|date:"Y" }}</div>
+                    <div class="stat-label">Join Year</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">
+                        {% if request.user.last_login %}
+                            {{ request.user.last_login|date:"m/d" }}
+                        {% else %}
+                            New
+                        {% endif %}
+                    </div>
+                    <div class="stat-label">Last Active</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">
+                        {{ request.user.tasks.count }}
+                    </div>
+                    <div class="stat-label">Tasks Created</div>
+                </div>
+            </div>
+            
+            <!-- Detailed Info -->
+            <div class="info-section">
+                <div class="info-card">
+                    <div class="info-title">📧 EMAIL ADDRESS</div>
+                    <div class="info-value">{{ request.user.email|default:"Not provided" }}</div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-title">🔐 ACCOUNT ID</div>
+                    <div class="info-value">#{{ request.user.id }} - {{ request.user.username|slugify }}</div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-title">🕐 ACCOUNT TIMELINE</div>
+                    <div class="info-value">
+                        Joined: {{ request.user.date_joined|date:"F d, Y \a\t h:i A" }}<br>
+                        Last login: {{ request.user.last_login|date:"F d, Y \a\t h:i A"|default:"First time user" }}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Section -->
+            <div class="security-section">
+                <div class="security-title">🛡️ SECURITY STATUS</div>
+                <div>Your account is protected with Django's security middleware</div>
+                <div class="security-badge">✓ OWASP Compliant</div>
+                <div class="security-badge" style="background: #3498db;">✓ Session Secured</div>
+                <div class="security-badge" style="background: #e74c3c;">✓ CSRF Protected</div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="{% url 'dashboard' %}" class="btn btn-primary">📊 Go to Dashboard</a>
+                <a href="{% url 'logout' %}" class="btn btn-secondary">🚪 Logout</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

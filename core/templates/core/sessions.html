@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Active Sessions</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .btn-danger { background: #dc3545; color: white; padding: 5px 10px; text-decoration: none; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h2>Active Sessions</h2>
+    <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+    <table>
+        <tr><th>Session Key</th><th>Last Activity</th><th>IP Address</th><th>Action</th></tr>
+        {% for session in sessions %}
+        <tr>
+            <td>{{ session.session_key|truncatechars:20 }}</td>
+            <td>{{ session.expire_date }}</td>
+            <td>{{ session.ip_address|default:"Unknown" }}</td>
+            <td><a href="{% url 'revoke_session' session.session_key %}" class="btn-danger">Revoke</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
