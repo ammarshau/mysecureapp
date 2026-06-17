@@ -13,4 +13,4 @@ smmap==5.0.0
 sqlparse==0.4.4
 stevedore==3.5.2
 typing-extensions==4.1.1
-zipp==3.6.0
+zipp==3.19.1
